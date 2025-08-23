@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1755926777093,
+      "tag": "0000_deep_landau",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1755928255026,
+      "tag": "0001_same_harpoon",
+      "breakpoints": true
+    }
+  ]
+}
