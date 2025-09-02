@@ -15,6 +15,13 @@
       "when": 1755928255026,
       "tag": "0001_same_harpoon",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1756719924257,
+      "tag": "0002_safe_pretty_boy",
+      "breakpoints": true
     }
   ]
 }
