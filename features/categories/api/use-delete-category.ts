@@ -28,7 +28,7 @@ export const useDeleteCategory = (id?: string) => {
             //todo: invalidate summary and transactions
         },
         onError: () => {
-            toast.error("Failed to edit categories");
+            toast.error("Failed to delete categories");
         },
     });
 
