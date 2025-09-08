@@ -35,7 +35,6 @@ export const NewTransactionSheet = () => {
   const categoryOptions = (categoryQuery.data ?? []).map((category) => ({
   label:category.name,
   value:category.id,
-
   }));
 
    const accountsQuery= useGetAccounts();
@@ -46,7 +45,6 @@ export const NewTransactionSheet = () => {
   const accountOptions = (accountsQuery.data ?? []).map((account) => ({
   label:account.name,
   value:account.id,
-
   }));
 
   const isPending = 
