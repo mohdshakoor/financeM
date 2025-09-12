@@ -70,7 +70,7 @@ export const ImportCard = ({
     return column.split("_")[1];
   };
 
-  const mappedData = {
+    const mappedData = {
     headers: headers.map((_header, index) => {
       const columnIndex = getColumnIndex(`column_${index}`);
       return selectedColumns[`column_${columnIndex}`] || null;
@@ -85,8 +85,8 @@ export const ImportCard = ({
         ? []
         : transformedRow;
     }).filter((row) => row.length > 0),
-  };
-      const arrayOfData = mappedData.body.map((row) => {
+    };
+    const arrayOfData = mappedData.body.map((row) => {
       return row.reduce((acc:any, cell, index) => {
         const header = mappedData.headers[index];
         if (header !== null) {
@@ -100,7 +100,7 @@ export const ImportCard = ({
     ...item,
     amount: convertAmountToMiliunits(parseFloat(item.amount)),
     date: format(parse(item.date, dateFormat, new Date()), outputFormat),
-  }));
+    }));
    onSubmit(formattedData);
   };
 
@@ -143,4 +143,3 @@ export const ImportCard = ({
         </div>
   );
 };
-      
