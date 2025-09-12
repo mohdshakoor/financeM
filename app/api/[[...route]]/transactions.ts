@@ -205,114 +205,88 @@ const app = new Hono()
    }
 )
 .patch(
-    "/:id",
-    clerkMiddleware(),
-    zValidator(
-      "param",
-      z.object({
-        id: z.string().optional(),
-      })
-    ),
-    zValidator(
-      "json",
-      insertTransactionSchema.omit({
-        id: true,
-      })
-    ),
-    async (c) => {
-      const auth = getAuth(c);
-      const { id } = c.req.valid("param");
-      const values = c.req.valid("json");
+  "/:id",
+  clerkMiddleware(),
+  zValidator("param", z.object({ id: z.string() })),
+  zValidator("json", insertTransactionSchema.omit({ id: true })),
+  async (c) => {
+    const auth = getAuth(c);
+    const { id } = c.req.valid("param");
+    const values = c.req.valid("json");
 
-      if (!id) {
-        return c.json({ error: "Missing id" }, 400);
-      }
+    if (!auth?.userId) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
 
-      if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
-       
-       const transactionsToUpdate = db.$with("transactions_to_update").as(
-       db.select({ id: transactions.id })
-        .from(transactions)
-        .innerJoin(accounts, eq(transactions.accountId, accounts.id))
-        .where(
-          and(
-            eq(transactions.id, id),
-            eq(accounts.userId, auth.userId)
-          )
-        )
-    );
-
-      const [data] = await db
-      .with(transactionsToUpdate)
+    const [data] = await db
       .update(transactions)
       .set(values)
       .where(
-       inArray(transactions.id, sql`(select id from $
-       {transactionsToUpdate})`
-      )
-    )
-    .returning();
-
-      if (!data) {
-        return c.json({ error: "Not found"},404);
-      }
-      return c.json({ data });
-     }
-  )
-  .delete(
-    "/:id",
-    clerkMiddleware(),
-    zValidator(
-      "param",
-      z.object({
-        id: z.string().optional(),
-      })
-    ),
-   
-    async (c) => {
-      const auth = getAuth(c);
-      const { id } = c.req.valid("param");
-
-      if (!id) {
-        return c.json({ error: "Missing id" }, 400);
-      }
-
-      if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
-
-      const transactionsToDelete = db.$with("transactions_to_delete").as(
-       db.select({ id: transactions.id })
-        .from(transactions)
-        .innerJoin(accounts, eq(transactions.accountId, accounts.id))
-        .where(
-          and(
-            eq(transactions.id, id),
-            eq(accounts.userId, auth.userId)
+        and(
+          eq(transactions.id, id),
+          inArray(
+            transactions.accountId,
+            db
+              .select({ id: accounts.id })
+              .from(accounts)
+              .where(eq(accounts.userId, auth.userId))
           )
         )
+      )
+      .returning();
+
+    if (!data) {
+      return c.json({ error: "Transaction not found or not owned by user" }, 404);
+    }
+
+    return c.json({ data });
+  }
+)
+
+
+ .delete(
+  "/:id",
+  clerkMiddleware(),
+  zValidator(
+    "param",
+    z.object({
+      id: z.string(),   // required
+    })
+  ),
+  async (c) => {
+    const auth = getAuth(c);
+    const { id } = c.req.valid("param");
+
+    if (!auth?.userId) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const transactionsToDelete = db.$with("transactions_to_delete").as(
+      db
+        .select({ id: transactions.id })
+        .from(transactions)
+        .innerJoin(accounts, eq(transactions.accountId, accounts.id))
+        .where(and(eq(transactions.id, id), eq(accounts.userId, auth.userId)))
     );
 
-      const [data] = await db
+    const [data] = await db
       .with(transactionsToDelete)
       .delete(transactions)
       .where(
-      inArray(
-       transactions.id,
-       sql`select id from ${transactionsToDelete}`
-       )
-     )
-    .returning({
-     id: transactions.id,
-     });
- 
+        inArray(
+          transactions.id,
+          // ✅ valid SQL sub-query
+          sql`(select id from transactions_to_delete)`
+        )
+      )
+      .returning({ id: transactions.id });
 
-      if (!data) {
-        return c.json({ error: "Not found"},404);
-      }
-      return c.json({ data });
-     }
-  );
+    if (!data) {
+      return c.json({ error: "Not found" }, 404);
+    }
+
+    return c.json({ data });
+  }
+);
+
 export default app;
