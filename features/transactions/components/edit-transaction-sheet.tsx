@@ -70,13 +70,14 @@ export const EditTransactionSheet = () => {
   categoryQuery.isLoading ||
   accountsQuery.isLoading;
 
-  const onSubmit = (values: FormValues) => {
+const onSubmit = (values: FormValues) => {
   editMutation.mutate(values, {
     onSuccess: () => {
         onClose();
     }
   });
   }
+
 
   const onDelete = async () => {
     const ok = await confirm();
