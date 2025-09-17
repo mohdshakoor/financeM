@@ -11,7 +11,7 @@ import {
     SelectValue,
     SelectItem
 }from "@/components/ui/select"
-import { AreaChart, BarChart3, FileSearch, LineChart, Loader2 } from "lucide-react";
+import { AreaChart, BarChart3, FileSearch, Loader2 } from "lucide-react";
 import { AreaVariant } from "./area-variant";
 import { BarVariant } from "./bar-variant";
 import { LineVariant } from "./line-variant";

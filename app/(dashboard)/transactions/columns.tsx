@@ -75,7 +75,6 @@ export const columns: ColumnDef<ResponseType>[] = [
       )
     },
     cell: ({row}) => {
-      const date = row.getValue("date") as Date;
       return (
          <CategoryColumn
          id={row.original.id}
@@ -142,7 +141,6 @@ export const columns: ColumnDef<ResponseType>[] = [
       )
     },
     cell: ({row}) => {
-      const date = row.getValue("date") as Date;
       return (
         <AccountColumn
          account={row.original.account}

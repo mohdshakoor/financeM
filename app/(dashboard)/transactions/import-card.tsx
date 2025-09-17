@@ -32,7 +32,6 @@ type Props = {
 
 export const ImportCard = ({
   data,
-  onCancel,
   onSubmit,
 }: Props) => {
     const [selectedColumns , setSelectedColumns] = useState<SelectedColumnsState>({});

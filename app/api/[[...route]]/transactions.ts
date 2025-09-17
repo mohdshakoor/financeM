@@ -19,7 +19,7 @@ const app = new Hono()
     clerkMiddleware(),    
     async (c) => {
     const auth = getAuth(c);
-    const {from , to, accountId} = c.req.valid("query");
+    const {from , accountId} = c.req.valid("query");
 
     if(!auth?.userId) {
         return c.json({error:"Unauthorized"},401);

@@ -17,8 +17,6 @@ type Props = {
 };
 
 export const RadialVariant = ({ data }: Props) => {
-  const total = data.reduce((sum, d) => sum + d.value, 0);
-
   return (
     <ResponsiveContainer width="100%" height={350}>
       <RadialBarChart
@@ -49,7 +47,7 @@ export const RadialVariant = ({ data }: Props) => {
           content={({ payload }: any) => {
             return(
             <ul className="flex flex-col space-y-2">
-              {payload.map((entry: any,index:number) => (
+              {payload.map((entry: any) => (
                   <li 
                   key={entry.value}
                    className="flex items-center space-x-2">
