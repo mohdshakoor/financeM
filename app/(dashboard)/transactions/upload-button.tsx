@@ -10,8 +10,6 @@ type Props = {
 export const UploadButton = ({ onUpload }: Props) => {
   const { CSVReader } = useCSVReader();
 
-  //todo: add a paywalll
-
   return (
     <CSVReader onUploadAccepted = {onUpload}>
       {({ getRootProps }: any) => (

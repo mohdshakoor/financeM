@@ -8,7 +8,7 @@ type ResponseType = InferResponseType<typeof client.api.transactions[":id"]["$pa
 type RequestType = InferRequestType<typeof client.api.transactions[":id"]["$patch"]>["json"];
 
 
-export const useEditTransaction = (id?: string) => {
+export const useEditTransaction = (id: string) => {
     const queryClient = useQueryClient();
 
     const mutation = useMutation<
@@ -18,17 +18,16 @@ export const useEditTransaction = (id?: string) => {
     >({
         mutationFn: async (json) => {
             const response = await client.api.transactions[":id"]["$patch"]({
-                param: { id },
+                param: { id }, // ✅ id is guaranteed string
                 json,
             });
-            
             return await response.json();
         },
         onSuccess: () => {
             toast.success("Transaction Updated");
-            queryClient.invalidateQueries({ queryKey: ["transaction", {id}] });
+            queryClient.invalidateQueries({ queryKey: ["transaction", { id }] });
             queryClient.invalidateQueries({ queryKey: ["transactions"] });
-            //todo: invalidate summary 
+            queryClient.invalidateQueries({ queryKey: ["summary"] });
         },
         onError: () => {
             toast.error("Failed to edit transaction");
