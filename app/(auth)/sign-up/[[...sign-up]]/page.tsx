@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Loader, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { SignUp, ClerkLoaded, ClerkLoading } from '@clerk/nextjs';
 
 export default function Page() {
