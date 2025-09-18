@@ -1,4 +1,6 @@
 'use client';
+export const dynamic = 'force-dynamic';
+
 
 import { useNewCategory } from "@/features/categories/hooks/use-new-category";
 
