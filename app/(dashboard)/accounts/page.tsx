@@ -1,4 +1,5 @@
 'use client';
+export const dynamic = 'force-dynamic';
 
 import { useNewAccount } from "@/features/accounts/hooks/use-new-account";
 

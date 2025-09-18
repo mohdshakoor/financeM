@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { DataCharts } from "@/components/data-charts";
 import { DataGrid } from "@/components/data-grid";
 
